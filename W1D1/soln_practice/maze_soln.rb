@@ -2,14 +2,15 @@ class Maze
     DELTAS = [[1, 0], [0, 1], [-1, 0], [0, -1]]
   
     attr_reader :start_ind, :end_ind
-    def initialize(filename)
-      @map = load_map(filename)
-      @title = parse_title(filename)
+    
+    def initialize(filename) #initialize maze class with filename
+      @map = load_map(filename) #holds the 2d array of maze
+      @title = parse_title(filename) 
       @start_ind = find_start
       @end_ind = find_end
     end
-
-    def load_map(filename)
+    
+    def load_map(filename) #returns 2d array with all the rows
       maze = []
       File.open(filename).each_line do |line|
         chars = line.split(//)
@@ -18,23 +19,23 @@ class Maze
       maze
     end
     
-    def is_wall?(point)
+    def is_wall?(point) #checks if pair of col, row (x,y) corresponds to a wall
       x, y = point
       @map[y][x] == "*"
     end
 
-    def in_maze?(point)
+    def in_maze?(point) #checks if pair of col, row (x,y) corresponds a spot that's on the board
       x, y = point
       not_negative = (x >= 0) && (y >= 0)
       within_bounds = (x <= @map[0].length) && (y <= @map.length)
       not_negative && within_bounds
     end
 
-    def parse_title(filename)
+    def parse_title(filename) #returns the filename
       filename.match(/(.+)\.txt/)[1]
     end
 
-    def to_s
+    def to_s #returns the whole maze
       string = "MAZE: #{@title}\n"
       @map.each do |line|
         string << line.join("")
@@ -42,21 +43,22 @@ class Maze
       string
     end
 
-    def find_start
+    def find_start #find start, returns a pair of x,y
       find_char("S")
     end
 
-    def find_end
+    def find_end #find end, returns a pair of x,y
       find_char("E")
     end
 
-    def find_char(char)
+    def find_char(char) #returns col, row of the goal char
       @map.each_with_index do |line, y|
         return [line.index(char), y] if line.index(char)
       end
     end
 
-    def find_neighbors(point)
+    def find_neighbors(point) #at any x,y, find the neighbors that are in maze and not wall
+      #basically find all the open spaces
       p_x, p_y = point
       [].tap do |neighbors|
         DELTAS.each do |d_x, d_y|
@@ -193,7 +195,6 @@ class Maze
 
   end #end maze solver class
 
-end
 
 #tests
 
