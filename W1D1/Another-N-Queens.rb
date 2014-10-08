@@ -1,46 +1,104 @@
 require 'pp'
-require 'test/unit'
+
 
 class QueenSolver
   
+  attr_reader :max_row
   
-  def initialize
-    
-    #clear out the whole board and set every spot as true
-    @board = Array.new(8) { Array.new(8) { true } }
-    
-    #Fixnum of 1 represents a queen, and there are a total of 8 queens to place
-    @queens = Array.new(8) { 1 }
-    
+  def initialize  
+    #clear out the whole board and set every spot as blank
+    @board = Array.new(8) { Array.new(8) { "b" } }
+    @max_row = 7
   end
   
-  def possible_placements(row) #passes a row and returns array of idx of open positions
-    [].tap do |positions|
-      row.each_with_index do |el,idx|
-        positions << idx if el
+  def solve(row)
+    #go through each one of the positions for one row, then if placed, go solve the next row
+  
+    (0..max_row).each do |col|
+      if safe(row,col)
+        #if it's safe, we can place a piece
+        @board[row][col] = "Q"
+        if row == max_row
+          pp render
+          exit
+        else
+          solve(row+1)
+        end
+        @board[row][col] = "b"
       end
     end
   end
-   
-  def queens_all_gone? #returns true once all the queens have been placed
-    @queens.empty?
+  
+  def safe(row,col)
+    return false if !safe_row(row)
+    return false if !safe_col(col)
+
+    # Check the diagonals for safe.
+    return false if !safe_diag(row, col, 1, 1)
+    return false if !safe_diag(row, col, 1, -1)
+    return false if !safe_diag(row, col, -1, 1)
+    return false if !safe_diag(row, col, -1, -1)
+
+    # Should be OK.
+    return true
   end
   
-  def row_filled_up?(row) #returns true if there are no open slots left
-    row.all? { |el| el != true }
+  #need to figure this out
+  def safe_diag(suggested_row, suggested_col, row_mod, col_mod)
+       row,col = suggested_row+row_mod, suggested_col+col_mod
+       while true do
+
+           # Break out of the loop if the row or column is off the board.
+           break if (row > @max_row) || (col > @max_row ) || (row < 0) || (col < 0)
+
+           # If this row or column has a queen, then it's not safe.
+           return false if @board[row][col] == "Q"
+               
+           # Move in the appropriate direction.
+           row += row_mod
+           col += col_mod
+       end
+
+       # This direction is safe.
+       return true
+   end
+
+  
+  #returns false for any row that's passed into row
+  def safe_row(row)
+    0.upto(max_row).each do |col|
+      return false if @board[row][col] == "Q"
+    end
+    
+    true
+  end
+  
+  #returns false for any column that's passed into col
+  def safe_col(col)
+    0.upto(max_row).each do |row|
+      return false if @board[row][col] == "Q"
+    end
+    
+    true
+  end
+  
+  def position_on_board(x,y) #returns true if the x and y is located within the grid
+    horizontal = ( x >= 0 ) && ( x <= 7 )
+    vertical = ( y >= 0 ) && ( y <= 7 )
+    horizontal && vertical
+  end
+  
+  def render 
+    @board.each do |row|
+      row.each do |col|
+        col
+      end
+      "\n"
+    end
   end
   
 end
 
-class TestQueenSolver < Test::Unit::TestCase
-  def test_possible_placement
-    test = QueenSolver.new
-    assert_equal [1,2], test.possible_placements([false,true,true,false])
-    assert_equal [0,1,7], test.possible_placements([true,true,false,false,false,false,false,true])
-  end
-  
-  def test_row_filled_up?
-    test = QueenSolver.new
-    assert_equal true, test.row_filled_up?([1,false,1,1,false,false,false,false])
-  end
-end
+
+test = QueenSolver.new
+pp test.solve(0)
