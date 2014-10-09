@@ -1,5 +1,5 @@
 
-require 'debugger'
+require 'byebug'
 
 
 class Board
@@ -27,12 +27,12 @@ class Board
 
 
   def winner
-    winning_combs.any? do |combination|
-      return "x" if combination.all? do |spot|
-        mark_at(spot) == "x"
-      end
-      return "o" if combination.all? do |spot|
-          mark_at(spot) == "o"
+    arr = ["x","o"]
+    arr.each do |piece|
+      winning_combs.any? do |combination|
+        return piece if combination.all? do |spot|
+          mark_at(spot) == piece
+        end
       end
     end
     
@@ -98,8 +98,6 @@ class Game
     @player1.piece = 'x'
     @player2 = player2
     @player2.piece = 'o'
-    @active_player = @player1
-
   end
   
   def reinitialize
@@ -119,7 +117,7 @@ class Game
   end
   
   def play
-    
+    byebug
     reinitialize
     puts "Welcome to our Tic-Tac-Toe!"
     users_choice = @active_player.user_input
@@ -135,9 +133,7 @@ class Game
       end
       switch
     end
-    
-    
-    
+
     puts "Its a tie!"
   end
   
