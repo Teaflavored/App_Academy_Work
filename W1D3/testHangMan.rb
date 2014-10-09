@@ -1,8 +1,8 @@
 class Hangman
   def initialize(player1,player2)
-    @picking_player = player1 #computer
-    @guessing_player = player2 #guessing player, human
-    @guessing_player.set_word_length( @picking_player.pick_word )
+    @picking_player = player1 #player who picks the word
+    @guessing_player = player2 #player who tries to guess
+
   end
   
   def display
@@ -15,21 +15,23 @@ class Hangman
   
   def play
     puts "Welcome to Hangman!"
+    @guessing_player.set_word_length( @picking_player.pick_word )
     
     until game_over?
       display
       temp_choice = @guessing_player.get_user_input
       add_to_player_guesses(temp_choice)
-      @picking_player.check_letter_and_position( temp_choice, @guessing_player)
+      @picking_player.check_letter_and_position(temp_choice, @guessing_player)
       @guessing_player.update_current_state(@guessing_player)
     end
     
-    @guessing_player.solved? ? (puts "Congrats #{ @guessing_player.name }, you've solved the word in #{15-@guessing_player.tries} guesses") : (puts "#{ @guessing_player.name }, you lose, you're out of guesses") 
+    @guessing_player.solved? ? (puts "Congrats #{ @guessing_player.name }, you've solved the word \"#{ @guessing_player.return_final_word }\" in #{15-@guessing_player.tries} guesses") : (puts "#{ @guessing_player.name }, you lose, you're out of guesses") 
   end
 
   def game_over?
     !@guessing_player.tries_left? || @guessing_player.solved?
   end
+  
 end
 
 class Player
@@ -41,7 +43,6 @@ class Player
     @guesses = []
     @tries = 15
     @correct_letters = {}
-    @guess_dictionary = nil #update later
   end
   
   def set_word_length(word_length)
@@ -56,6 +57,7 @@ class Player
     @tries > 0
   end
   
+  #update the current state
   def update_current_state(player)
     player.correct_letters.each do |key, values|
       values.each do |index|
@@ -72,11 +74,14 @@ class Player
     @guesses << letter
   end
   
+  def return_final_word
+    "#{ @current_state.join("") }"
+  end
+  
+  
 end
 
 class HumanPlayer < Player
-  
-  
   def get_user_input
     loop do
       puts "Guess a letter.  You have #{@tries} tries left."
@@ -103,16 +108,14 @@ class HumanPlayer < Player
   end
   
   private 
-  
-  
-  def valid_input?(user_input)
-    user_input.match(/[a-z]{1}/) && user_input.length == 1
-  end
+    def valid_input?(user_input)
+      user_input.match(/[a-z]{1}/) && user_input.length == 1
+    end
 
-  def okay_letter?(user_input)
-    return true if valid_input?(user_input) && !self.guesses.include?(user_input)
-    nil
-  end
+    def okay_letter?(user_input)
+      return true if valid_input?(user_input) && !self.guesses.include?(user_input)
+      nil
+    end
 end
 
 class CompPlayer < Player
@@ -122,6 +125,7 @@ class CompPlayer < Player
     @dictionary = load_dictionary
     @word = pick_random_word_from_dictionary
   end
+  
   def pick_word
     @word.length
   end
@@ -199,5 +203,5 @@ auster = HumanPlayer.new("Auster")
 justin = HumanPlayer.new("Justin")
 comp = CompPlayer.new
 comp2 = CompPlayer.new
-test = Hangman.new(justin,auster)
+test = Hangman.new(comp,comp2)
 test.play
