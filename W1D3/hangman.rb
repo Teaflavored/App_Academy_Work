@@ -2,11 +2,10 @@ class Hangman
   def initialize(player1,player2)
     @picking_player = player1 #player who picks the word
     @guessing_player = player2 #player who tries to guess
-
   end
   
   def display
-    puts "Secret word: #{ @guessing_player.current_state.join('') }"
+    puts "Secret word: #{ @guessing_player.current_state.join(" ") }"
   end
   
   def add_to_player_guesses(user_input)
@@ -19,7 +18,12 @@ class Hangman
     
     until game_over?
       display
-      temp_choice = @guessing_player.get_user_input
+      begin
+        temp_choice = @guessing_player.get_user_input
+      rescue
+        puts "Game will now exit now since you are cheating"
+        exit
+      end
       add_to_player_guesses(temp_choice)
       @picking_player.check_letter_and_position(temp_choice, @guessing_player)
       @guessing_player.update_current_state(@guessing_player)
@@ -119,7 +123,10 @@ class HumanPlayer < Player
 end
 
 class CompPlayer < Player
-
+  
+  class WordDoesNotExistError < StandardError
+  end
+  
   def initialize 
     super
     @dictionary = load_dictionary
@@ -132,32 +139,27 @@ class CompPlayer < Player
   
   def get_user_input
     update_smart_dictionary
-    update_smart_dictionary2
+    remove_words_that_contain_wrong_guessses
+    raise WordDoesNotExistError if @smart_dictionary.empty?
     choice = most_frequent_letter
     choice
   end
   
   def update_smart_dictionary
-    dummy_copy = @smart_dictionary.dup
-    @smart_dictionary.each do |word| 
-      temp_arr = word.split('')
-      
-      @current_state.each_with_index do |char, index|
-        dummy_copy.delete(word) unless char == "_" || temp_arr[index] == char
+    @smart_dictionary.select! do |word|
+      word.split("").each_with_index.all? do |letter,idx|
+        @current_state[idx] == letter || @current_state[idx] == "_"
       end
     end
-    @smart_dictionary = dummy_copy.dup
   end
   
-  def update_smart_dictionary2
-    dummy_copy = @smart_dictionary.dup
+  def remove_words_that_contain_wrong_guessses
     wrong_guesses = @guesses - @current_state
     @smart_dictionary.reject! do |word|
-      wrong_guesses.each do |char|
-        dummy_copy.delete(word) if word.include?(char)
+      wrong_guesses.any? do |char|
+        word.include?(char)
       end
     end
-    @smart_dictionary = dummy_copy.dup
   end
   
   def most_frequent_letter
@@ -199,9 +201,23 @@ class CompPlayer < Player
 end
 
 #enrapture
-auster = HumanPlayer.new("Auster")
-justin = HumanPlayer.new("Justin")
-comp = CompPlayer.new
-comp2 = CompPlayer.new
-test = Hangman.new(comp,comp2)
-test.play
+if __FILE__ == $PROGRAM_NAME
+  puts "Who's picking the word? Computer? (Y/N)"
+  user_selection = gets.chomp.downcase
+  if user_selection == 'y'
+    picker = CompPlayer.new
+  else
+    picker = HumanPlayer.new("Auster")
+  end
+  
+  puts "Who's guessing the word? Computer? (Y/N)"
+  user_selection = gets.chomp.downcase
+  if user_selection == 'y'
+    guesser = CompPlayer.new
+  else
+    guesser = HumanPlayer.new("Biyin")
+  end
+  
+  game = Hangman.new(picker,guesser)
+  game.play
+end
