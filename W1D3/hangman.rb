@@ -1,3 +1,5 @@
+require 'benchmark'
+
 class Hangman
   def initialize(player1,player2)
     @picking_player = player1 #player who picks the word
@@ -162,6 +164,7 @@ class CompPlayer < Player
     end
   end
   
+  
   def most_frequent_letter
     long_string = @smart_dictionary.join('')
     counts = Hash.new(0)
@@ -201,6 +204,7 @@ class CompPlayer < Player
 end
 
 #enrapture
+
 if __FILE__ == $PROGRAM_NAME
   puts "Who's picking the word? Computer? (Y/N)"
   user_selection = gets.chomp.downcase

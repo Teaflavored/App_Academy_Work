@@ -10,7 +10,6 @@ def factorial_rec(n)
   end
 end
 
-
 def palindrome?(word)
   #recursively return whether a word is a palindrome
   if word.length <= 2
@@ -34,12 +33,15 @@ def bottles_beer(n)
 end
 
 
-def fibs_rec(n)
+def fibs_rec(n,times=0)
+  times +=1
+  p times
   return 0 if n ==0
   return 1 if n == 1
-  return fibs_rec(n-1)+fibs_rec(n-2)
+  return fibs_rec(n-1,times)+fibs_rec(n-2,times)
 end
 
+p fibs_rec(15)
 
 def flatten_rec(arr, result = [])
   #base_case if arr = [1 element]
@@ -90,6 +92,8 @@ def roman_mapping_rec(num, result = [])
 end
 
 
-p $roman_mapping
-p roman_mapping_rec(4)
+def reverser_rec(string)
+  return string if string.length <= 1
+  str[-1]+reverser_rec(string[0...-1])
+end
 # p flatten_rec([[1,2],5,[3,4],[[1,2],[4,5],5]])
