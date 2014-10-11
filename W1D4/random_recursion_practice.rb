@@ -41,8 +41,6 @@ def fibs_rec(n,times=0)
   return fibs_rec(n-1,times)+fibs_rec(n-2,times)
 end
 
-p fibs_rec(15)
-
 def flatten_rec(arr, result = [])
   #base_case if arr = [1 element]
   arr.each do |item|
@@ -97,3 +95,56 @@ def reverser_rec(string)
   str[-1]+reverser_rec(string[0...-1])
 end
 # p flatten_rec([[1,2],5,[3,4],[[1,2],[4,5],5]])
+
+
+
+arr = [1,2,3,[1,2]]
+
+def deep_dup(arr)
+  new_arr = []
+  arr.each do |el|
+    if el.is_a?(Array)
+      new_arr << deep_dup(el)
+    else
+      new_arr << el
+    end
+  end
+  new_arr
+end
+
+#n array of fibs
+def fibs_rec(n)
+  if n <= 2
+    [0, 1].take(n)
+  else
+    prev_fibs = fibs_rec(n-1)
+    prev_fibs << prev_fibs[-1] + prev_fibs[-2]
+  end
+end
+
+def bsearch(arr, target)
+  mid = arr.length / 2
+  
+  if arr[mid] == target
+    return mid
+  elsif arr[mid] < target
+    bsearch(arr[mid+1..-1], target) + mid + 1
+  else
+    bsearch(arr[0..mid-1], target)
+  end
+  
+end
+
+
+
+def subsets(arr)
+  return [[]] if arr.empty?
+  prev_set = subsets(arr[0...-1])
+  new_set = prev_set.map do |set|
+    set += [arr.last]
+  end
+  
+  prev_set += new_set
+end
+
+p subsets([1,2,3])
