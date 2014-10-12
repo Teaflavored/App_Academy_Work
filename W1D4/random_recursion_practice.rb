@@ -147,4 +147,26 @@ def subsets(arr)
   prev_set += new_set
 end
 
-p subsets([1,2,3])
+def bsearch(array, target)
+  return nil if array.empty?
+  mid = array.length / 2
+  
+  if array[mid] == target
+    return mid
+  elsif array[mid] > target
+    bsearch(array[0...mid], target)
+  else
+    subanswer = bsearch(array[mid+1..-1], target)
+    subanswer.nil? ? nil : (subanswer + mid + 1 )
+  end
+  
+end
+
+arr = [1,2,3,4,6,22,66,111]
+arr.each do |el|
+  p bsearch(arr,el)
+  p bsearch(arr,0)
+end
+
+
+
