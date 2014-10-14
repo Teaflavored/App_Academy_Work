@@ -23,3 +23,11 @@
 ##W1D5
 1. Knight's Travails (not shortest path, but one path can be found)
 2. Unbeatable Tic-Tac-Toe AI
+
+
+##W2D1
+1. Finished full Minesweeper game.
+* To Launch game run game.rb
+* To move please use WASD on keyboard
+* To reveal -> press r, to flag/unflag -> press f
+* To save game -> press 0, press anything else to quit
