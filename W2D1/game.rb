@@ -136,6 +136,14 @@ class Game
   end
 end
 
-g = Game.new(5,5,5)
-
-g.start_game
+if __FILE__ == $PROGRAM_NAME
+  puts "Welcome to Minesweeper"
+  puts "How many rows would you like? (1 - 26)"
+  rows = gets.chomp.to_i
+  puts "How many columns would you like? (1 - 26)"
+  cols = gets.chomp.to_i
+  puts "How many bombs would you like?"
+  bombs_n = gets.chomp.to_i
+  g = Game.new(rows, cols, bombs_n)
+  g.start_game
+end
