@@ -6,7 +6,7 @@ class NOTONBOARD < StandardError
 end
 
 class Game
-
+  
   def initialize
     @board = Board.new
     @current_turn = :white
@@ -70,6 +70,7 @@ class Game
       File.open("saved-game.txt", "w") do |f|
         f.puts self.to_yaml
       end
+      puts "Successfully saved."
       exit
     end
   
@@ -89,30 +90,51 @@ class Game
     def get_user_input
       puts "----------------------------------"
       puts "If you'd like to save, enter 's'."
-      puts "What piece would you like to move?"
+      puts "What piece would you like to move? (cl to castle left)"
       input_1 = gets.chomp
       save_file if input_1 == 's'
-      puts "Where would you like to move to?"
-      input_2 = gets.chomp
-      save_file if input_2 == 's'
+      if input_1 != 'cl' && input_1 != 'cr'
+        puts "Where would you like to move to?"
+        input_2 = gets.chomp
+        save_file if input_2 == 's'
+      else
+        return input_1
+      end
       
       [input_1, input_2]
     end
   
   
     def parse_user_input(array)
+      return array unless array.is_a?(Array)
+      
       from, to = array
   
       [convert_input(from), convert_input(to)]
     end
   
     def successful_move_made?(move_choice)
-      if @board.valid_move?(move_choice.first, move_choice.last, @current_turn)
-        @board.move_piece(move_choice.first, move_choice.last)
-        true
+      if move_choice == 'cl'
+        @board.castle(@current_turn, :left)
+      elsif move_choice == 'cr'
+        @board.castle(@current_turn, :right)
       else
-        puts "Not a valid move, please try again."
-        false
+        from_move, to_move = move_choice
+      
+        if @board.valid_move?(from_move, to_move, @current_turn)
+          @board.move_piece(from_move, to_move)
+          piece_at_end_pos = @board[to_move]
+        
+          #pawn promotion
+          if piece_at_end_pos.is_a?(Pawn) && to_move.first == 0 || to_move.first == 7
+            @board.create_queen_at_pos(to_move, piece_at_end_pos.color)
+          end
+        
+          true
+        else
+          puts "Not a valid move, please try again."
+          false
+        end
       end  
     end
   

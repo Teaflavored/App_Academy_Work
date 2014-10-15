@@ -53,9 +53,68 @@ class Board
     self[start_pos] = nil
     
     start_piece.set_new_current_position(end_pos)
-    start_piece.take_first_move if start_piece.is_a?(Pawn)
-
+    if start_piece.is_a?(Pawn) || start_piece.is_a?(Rook) || start_piece.is_a?(King) 
+      start_piece.take_first_move
+    end
+    
     self
+  end
+  
+  def castle(color, dir)
+    if can_castle?(color, dir)
+      row, col = get_row(color), get_col(dir)
+      king_delta = dir==:left ? [0, -2] : [0, 2]
+      rook_delta = dir==:left ? [0, 3] : [0, -2]
+      new_king_pos = combine_pos([row, 4], king_delta)
+      new_rook_pos = combine_pos([row, col], rook_delta)
+      move_piece([row, 4], new_king_pos)
+      move_piece([row, col], new_rook_pos)
+
+      true
+    else
+      puts "Can't castle that."
+      false
+    end
+  end
+  
+
+  
+  def can_castle?(color, dir)
+    return false if in_check?(color)
+    row, col = get_row(color), get_col(dir)
+    delta = dir==:left ? [0, -1] : [0, 1]
+    
+    king_pos, rook_pos = [row, 4], [row, col]
+    rook, king = self[rook_pos], self[king_pos]
+    
+    return false if invalid_casle_pos?(king, rook)
+    
+    new_pos = combine_pos(king_pos, delta)
+    until new_pos.last < 2 || new_pos.last > 6
+      return false if !self[new_pos].nil?
+      new_board = self.dup
+      new_board.move_piece(king_pos, new_pos)
+      return false if new_board.in_check?(color)
+      new_pos = combine_pos(new_pos, delta)
+    end
+    
+    true
+  end
+  
+
+  
+  
+  def invalid_casle_pos?(king, rook)
+    king.nil? || king.has_moved || rook.nil? || rook.has_moved
+  end
+  
+  def combine_pos(pos1, pos2)
+    [pos1[0] + pos2[0], pos1[1] + pos2[1]]
+  end
+  
+  
+  def create_queen_at_pos(pos, color)
+    self[pos] = Queen.new(pos, self, color)
   end
   
   def valid_move?(start_pos, end_pos, color)
@@ -111,9 +170,9 @@ class Board
     def get_piece_color(el, row_index, col_index)
       if !el.nil?
         if el.color == :white
-          piece = "#{el.piece_unicode} ".red
+          piece = "#{el.piece_unicode} ".green
         else
-          piece = "#{el.piece_unicode} ".blue
+          piece = "#{el.piece_unicode} ".light_blue
         end
       end
       
@@ -149,6 +208,14 @@ class Board
       end
     
       enemy_possible_moves.include?(pos)
+    end
+    
+    def get_row(color)
+      row = color==:white ? 7 : 0
+    end
+  
+    def get_col(dir)
+      col = dir==:left ? 0 : 7
     end
   
     def valid_start_piece!(start_piece, color)
@@ -203,11 +270,11 @@ class Board
             if col_index == 0 || col_index == 7
               @grid[row_index][col_index] = Rook.new([row_index,col_index], self, :white)
             elsif col_index == 1 || col_index == 6
-              @grid[row_index][col_index] = Knight.new([row_index,col_index], self, :white)
+              #@grid[row_index][col_index] = Knight.new([row_index,col_index], self, :white)
             elsif col_index == 2 || col_index == 5
-              @grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :white)
+              #@grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :white)
             elsif col_index == 3
-              @grid[row_index][col_index] = Queen.new([row_index,col_index], self, :white)
+              #@grid[row_index][col_index] = Queen.new([row_index,col_index], self, :white)
             else
               @grid[row_index][col_index] = King.new([row_index,col_index], self, :white)
             end
