@@ -27,7 +27,6 @@
 
 ##W2D1
 1. Finished full Minesweeper game.
-* To Launch game run game.rb
-* To move please use WASD on keyboard
-* To reveal -> press r, to flag/unflag -> press f
-* To save game -> press 0, press anything else to quit
+
+##W2D2
+1. Chess game, still needs to refactor code and fix game UI logic
