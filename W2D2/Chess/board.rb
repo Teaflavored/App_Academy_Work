@@ -270,11 +270,11 @@ class Board
             if col_index == 0 || col_index == 7
               @grid[row_index][col_index] = Rook.new([row_index,col_index], self, :white)
             elsif col_index == 1 || col_index == 6
-              #@grid[row_index][col_index] = Knight.new([row_index,col_index], self, :white)
+              @grid[row_index][col_index] = Knight.new([row_index,col_index], self, :white)
             elsif col_index == 2 || col_index == 5
-              #@grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :white)
+              @grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :white)
             elsif col_index == 3
-              #@grid[row_index][col_index] = Queen.new([row_index,col_index], self, :white)
+              @grid[row_index][col_index] = Queen.new([row_index,col_index], self, :white)
             else
               @grid[row_index][col_index] = King.new([row_index,col_index], self, :white)
             end

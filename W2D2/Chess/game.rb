@@ -6,11 +6,7 @@ class NOTONBOARD < StandardError
 end
 
 class Game
-<<<<<<< Local Changes
-
-=======
   
->>>>>>> External Changes
   def initialize
     @board = Board.new
     @current_turn = :white
@@ -70,14 +66,6 @@ class Game
 
   private
   
-<<<<<<< Local Changes
-    def save_file
-      File.open("saved-game.txt", "w") do |f|
-        f.puts self.to_yaml
-      end
-      exit
-    end
-=======
     def save_file
       File.open("saved-game.txt", "w") do |f|
         f.puts self.to_yaml
@@ -85,15 +73,7 @@ class Game
       puts "Successfully saved."
       exit
     end
->>>>>>> External Changes
-  
-<<<<<<< Local Changes
-    def load_file(filename)
-      yaml_str = File.read(filename)
-      raise NoSavedGame if yaml_str.length == 0
-      game_obj = YAML.load(yaml_str)
-    end
-=======
+    
     def load_file(filename)
       yaml_str = File.read(filename)
       raise NoSavedGame if yaml_str.length == 0
@@ -106,36 +86,8 @@ class Game
       @board.display_board
       puts "#{@current_turn} is in check!" if @board.in_check?(@current_turn)
     end
->>>>>>> External Changes
     
-<<<<<<< Local Changes
-    def after_move_output
-      switch_turn
-      system("clear")
-      @board.display_board
-      puts "#{@current_turn} is in check!" if @board.in_check?(@current_turn)
-    end
-    
-    def get_user_input
-      puts "----------------------------------"
-      puts "If you'd like to save, enter 's'."
-      puts "What piece would you like to move?"
-      input_1 = gets.chomp
-      save_file if input_1 == 's'
-      puts "Where would you like to move to?"
-      input_2 = gets.chomp
-      save_file if input_2 == 's'
-      
-      [input_1, input_2]
-    end
-  
-  
-    def parse_user_input(array)
-      from, to = array
-  
-      [convert_input(from), convert_input(to)]
-    end
-=======
+
     def get_user_input
       puts "----------------------------------"
       puts "If you'd like to save, enter 's'."
@@ -161,19 +113,7 @@ class Game
   
       [convert_input(from), convert_input(to)]
     end
->>>>>>> External Changes
-  
-<<<<<<< Local Changes
-    def successful_move_made?(move_choice)
-      if @board.valid_move?(move_choice.first, move_choice.last, @current_turn)
-        @board.move_piece(move_choice.first, move_choice.last)
-        true
-      else
-        puts "Not a valid move, please try again."
-        false
-      end  
-    end
-=======
+    
     def successful_move_made?(move_choice)
       if move_choice == 'cl'
         @board.castle(@current_turn, :left)
@@ -198,8 +138,7 @@ class Game
         end
       end  
     end
->>>>>>> External Changes
-  
+    
     def winner_is
       switch_turn
       puts "#{@current_turn} wins!"
@@ -222,50 +161,11 @@ class Game
       true
     end
   
-<<<<<<< Local Changes
-<<<<<<< Local Changes
-<<<<<<< Local Changes
-  def convert_input_to_coord(input)
-    bishop.rb
-    board.rb
-    game.rb
-    king.rb
-    knight.rb
-    pawn.rb
-    piece.rb
-    queen.rb
-    rook.rb
-    saved-game.txt
-    SlidingPiece.rb
-    SteppingPiece.rb
-    test.rb
-    test2.rb
-  end
-=======
     def switch_turn
       @current_turn = @current_turn == :white ? :black : :white
-=======
-    def switch_turn
-      @current_turn = @current_turn == :white ? :black : :white
->>>>>>> External Changes
-=======
-    def switch_turn
-      @current_turn = @current_turn == :white ? :black : :white
->>>>>>> External Changes
-    
-<<<<<<< Local Changes
-<<<<<<< Local Changes
+
     end
-  
->>>>>>> External Changes
-=======
-    end
-  
->>>>>>> External Changes
-=======
-    end
-  
->>>>>>> External Changes
+
 end
 
 if __FILE__ == $PROGRAM_NAME
