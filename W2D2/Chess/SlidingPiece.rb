@@ -11,25 +11,26 @@ class SlidingPiece < Piece
     moves
   end
   
-  def create_path_in_direction(start, direction)
-    path = []
-    new_pos = [start[0] + direction[0], start[1] + direction[1]]
+  private
+  
+    def create_path_in_direction(start, dir)
+      path = []
+      new_pos = combine_pos(start,dir)
     
-    while on_board?(new_pos) 
-      if @board[new_pos].nil? 
-        path << new_pos
-      else
-        if @board[new_pos].color == self.color
+      while @board.on_board?(new_pos) 
+        if @board[new_pos].nil? 
+          path << new_pos
+        elsif @board[new_pos].color == self.color
           return path
         else
           path << new_pos
           return path
         end
+        new_pos = combine_pos(new_pos, dir)
       end
-      new_pos = [new_pos[0] + direction[0], new_pos[1] + direction[1]]
+    
+      path
     end
-    path
-  end
   
 end
 

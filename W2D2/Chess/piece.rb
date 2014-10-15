@@ -6,12 +6,7 @@ class Piece
     @board = board
     @color = color
   end
-  
-  def on_board?(pos)
-    row, col = pos
-    row.between?(0,7) && col.between?(0,7)
-  end
-  
+
   def set_new_current_position(new_pos)
     @pos = new_pos
   end
@@ -20,6 +15,10 @@ class Piece
     board_dup = @board.dup
     board_dup.move_piece(@pos, end_pos)
     board_dup.in_check?(self.color)
+  end
+  
+  def combine_pos(pos1, pos2)
+    [pos1[0] + pos2[0], pos1[1] + pos2[1]]
   end
   
 end
