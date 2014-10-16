@@ -28,5 +28,8 @@
 ##W2D1
 1. Finished full Minesweeper game.
 
-##W2D2
-1. Chess game, still needs to refactor code and fix game UI logic
+##W2D2 - W2D3
+1. Chess game fully done
+
+##W2D4
+1. Finished Checkers game (American Checkers)
