@@ -1,7 +1,6 @@
-require_relative 'SteppingPiece.rb'
+require_relative 'slidingpiece.rb'
 
-class King < SteppingPiece
-  attr_reader :has_moved
+class Queen < SlidingPiece
   DELTAS = [
      [-1, -1],
      [-1,  0],
@@ -15,11 +14,7 @@ class King < SteppingPiece
   
   def initialize(pos, board, color)
     super(pos, board, color)
-    @piece_unicode = color==:white ? "\u2654" : "\u265A"
-    @has_moved = false
+    @piece_unicode = color==:white ? "\u2655" : "\u265B"
   end
   
-  def take_first_move
-    @has_moved = true
-  end
 end

@@ -1,4 +1,4 @@
-require_relative "SteppingPiece.rb"
+require_relative "steppingpiece.rb"
 
 class Knight < SteppingPiece
   DELTAS = [

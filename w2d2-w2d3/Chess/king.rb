@@ -1,18 +1,21 @@
-require_relative 'SlidingPiece.rb'
+require_relative 'steppingpiece.rb'
 
-class Rook < SlidingPiece
+class King < SteppingPiece
   attr_reader :has_moved
-  
   DELTAS = [
+     [-1, -1],
      [-1,  0],
+     [-1,  1],
      [ 0, -1],
      [ 0,  1],
-     [ 1,  0]
+     [ 1, -1],
+     [ 1,  0],
+     [ 1,  1]
    ]
   
   def initialize(pos, board, color)
     super(pos, board, color)
-    @piece_unicode = color==:white ? "\u2656" : "\u265C"
+    @piece_unicode = color==:white ? "\u2654" : "\u265A"
     @has_moved = false
   end
   

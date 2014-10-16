@@ -1,4 +1,4 @@
-require_relative 'SlidingPiece.rb'
+require_relative 'slidingpiece.rb'
 
 class Bishop < SlidingPiece
   DELTAS = [
