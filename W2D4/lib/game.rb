@@ -1,4 +1,5 @@
 require_relative 'board.rb'
+require 'io/console'
 require 'yaml'
 
 class Game
@@ -22,19 +23,55 @@ class Game
     nil
   end
   
-
-
+  def alternate_input
+    move_seq = []
+    loop do
+      input = $stdin.getch
+      case input
+      when 'w'
+        @board.update_current_tile(:up)
+        display
+      when 's'
+        @board.update_current_tile(:down)
+        display
+      when 'a'
+        @board.update_current_tile(:left)
+        display
+      when 'd'
+        @board.update_current_tile(:right)
+        display
+      when 'f'
+        move_seq << @board.current
+        p move_seq
+      when 'l'
+        move_seq = []
+        display
+      when 'r'
+        raise InvalidMoveError if move_seq.empty? || move_seq.size == 1
+        raise NoPieceThere.new if @board[move_seq[0]].nil?
+        return move_seq
+      when '0'
+        exit
+      when 'p'
+        save_game
+      end
+    end
+  end
+  
+  def display
+    system("clear")
+    @board.render
+  end
   
   def run
     system("clear")
     @board.render
     until @board.over?
       begin 
-        puts "*Current turn is #{@current}'s turn*"
-        input = parse_user_input(get_user_input)
+        input = alternate_input
         handle_full_turn(input)
         
-      rescue  CanJumpMustJump
+      rescue CanJumpMustJump
         puts "That's not valid since you still have moves left."
         retry
       rescue InvalidMoveError
@@ -70,6 +107,7 @@ class Game
   def handle_full_turn(input)
     @board[input[0]].perform_moves(input.drop(1), @current)
     system("clear")
+    @board.switch_turn
     @board.render
     switch_turn
   end

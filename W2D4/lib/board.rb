@@ -2,8 +2,12 @@
 require_relative 'piece.rb'
 
 class Board
+  attr_reader :current
+  
   def initialize(dup = false)
     @grid = Array.new(8) { Array.new(8) { nil } }
+    @current_turn = :white
+    @current = [0,0]
     populate_grid unless dup
   end
   
@@ -18,14 +22,36 @@ class Board
     @grid.flatten.compact.first.color
   end
   
+  def switch_turn
+    @current_turn = @current_turn == :white ? :red : :white
+  end
+  
   def render
-    puts "Welcome to Checkers!"
+    puts "Checkers! WASD to move around, F to path from start piece"
+    puts "R at final destination to execute move sequence, P to save game, 0 to exit."
+    puts "L to clear move sequence and redo from starting piece."
+    puts "*Current turn is #{@current_turn}'s turn.*\n\n"
     puts "  #{(0..7).to_a.join(" ")}"
-    each_pos do |el, row_idx, col_idx|
-      print "#{row_idx}|" if col_idx == 0
-      print el.nil? ? " |" : "#{el.symbol}|"
-      puts if col_idx == 7
+    each_pos do |el, row, col|
+      print "#{row}|" if col == 0
+      piece = el.nil? ? " |" : "#{el.symbol}|"
+      print [row, col] == @current ? piece.on_yellow.blink : piece
+      puts if col == 7
     end
+  end
+  
+  def update_current_tile(sym)
+    case sym
+    when :left
+      new_pos = [@current[0], @current[1] - 1]
+    when :right
+      new_pos = [@current[0], @current[1] + 1]
+    when :up
+      new_pos = [@current[0] - 1, @current[1]]
+    when :down
+      new_pos = [@current[0] + 1, @current[1]]
+    end
+    @current = new_pos if on_board?(new_pos)
   end
   
   def [](pos)
