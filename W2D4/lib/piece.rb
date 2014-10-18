@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'colorize'
-require 'test/unit'
+
 class InvalidMoveError < StandardError
 end
 
@@ -64,7 +64,7 @@ class Piece
       else
         raise InvalidMoveError.new
       end
-    else
+    else # if move sequence is multiple long, must be all jumps
       move_seq.each do |move|
         raise InvalidMoveError.new unless perform_jump(move)
       end
@@ -136,9 +136,9 @@ class Piece
     [(pos1[0] + pos2[0]) / 2, (pos1[1] + pos2[1]) / 2]
   end
   
-  def pos_add_delta(delta)
+  def pos_add_delta(deltas)
     #returns positions a piece can reach to by sliding
-    delta.map do |delta|
+    deltas.map do |delta|
       comb_arr(@pos, delta)
     end
   end
