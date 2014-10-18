@@ -32,6 +32,7 @@ class Player
   end
   
   def show_hand
+    puts "Your hand contains a #{@hand.worth}"
     puts @hand.to_s
   end
     

@@ -16,14 +16,14 @@ end
 class Hand
   
   HAND_WORTH ={
-    mixed: 0,
+    singles: 0,
     pair: 1,
-    twopair: 2,
-    threes: 3,
+    two_pair: 2,
+    three_of_a_kind: 3,
     straight: 4,
     flush: 5,
-    fullhouse: 6,
-    fours: 7,
+    full_house: 6,
+    four_of_a_kind: 7,
     straight_flush: 8,
     royal_flush: 9
     
@@ -50,7 +50,7 @@ class Hand
     @cards.each do |card|
       output_arr << card.to_s
     end
-    output_arr.join(", ") + ". Your hand's worth is #{worth.to_s}"
+    output_arr.join(", ")
   end
   
   def discard(card_pos)
@@ -112,14 +112,14 @@ class Hand
   def worth
     return :royal_flush if royal_flush?
     return :straight_flush if straight_flush?
-    return :fours if four_of_a_kind
-    return :fullhouse if full_house
+    return :four_of_a_kind if four_of_a_kind
+    return :full_house if full_house
     return :flush if flush?
     return :straight if straight?
-    return :threes if three_of_a_kind
-    return :twopair if two_pair
+    return :three_of_a_kind if three_of_a_kind
+    return :two_pair if two_pair
     return :pair if pair
-    :mixed
+    :singles
   end
   
   def number_same_card

@@ -8,16 +8,16 @@
 require 'hand'
 
 RSpec.describe Hand do
-  let(:card1) { double("card1", value: 5, suit: :club) }
-  let(:card2) { double("card2", value: 5, suit: :heart) }
-  let(:card3) { double("card3", value: 10, suit: :heart) }
-  let(:card4) { double("card4", value: 10, suit: :club) }
-  let(:card5) { double("card5", value: 5, suit: :diamond) }
+  let(:card1) { double("card1", value: 5, suit: :club, to_s: "Five of Clubs") }
+  let(:card2) { double("card2", value: 5, suit: :heart, to_s: "Five of Clubs") }
+  let(:card3) { double("card3", value: 10, suit: :heart, to_s: "Five of Clubs") }
+  let(:card4) { double("card4", value: 10, suit: :club, to_s: "Five of Clubs") }
+  let(:card5) { double("card5", value: 5, suit: :diamond, to_s: "Five of Clubs") }
   let(:card6) { double("card6") }
   let(:deck) { double("deck", deal_cards: [card1,card2,card3,card4,card5]) }
   let(:deck2) { double("deck2", deal_cards: [card6]) } 
   subject(:hand) { Hand.new(deck) }
-  
+
   
   describe "starting properties" do
     
@@ -58,6 +58,15 @@ RSpec.describe Hand do
       
       expect(hand.cards).to include(card6)
     end
+  end
+  
+  
+  describe "show hand method" do
+    
+    it "should use to_s method to show the hand" do
+      expect(hand.to_s).to include("Five of Clubs")
+    end
+    
   end
   
   #straight flush
@@ -148,7 +157,7 @@ RSpec.describe Hand do
   describe "self worth" do
     
     it "correctly determines a full house" do
-      expect(hand.worth).to eq(:fullhouse)
+      expect(hand.worth).to eq(:full_house)
     end
     
     it "correctly determines a straight flush" do
@@ -163,7 +172,7 @@ RSpec.describe Hand do
     
     it "correctly determines a four of a kind" do
       hand.cards = [card16, card17, card18, card19, card20]
-      expect(hand.worth).to eq(:fours)
+      expect(hand.worth).to eq(:four_of_a_kind)
     end
     
     it "correctly determines a flush" do
@@ -178,12 +187,12 @@ RSpec.describe Hand do
     
     it "correctly determines a three of a kind" do
       hand.cards = [card31, card32, card33, card34, card35]
-      expect(hand.worth).to eq(:threes)
+      expect(hand.worth).to eq(:three_of_a_kind)
     end
     
     it "correctly determines a two pair" do
       hand.cards = [card36, card37, card38, card39, card40]
-      expect(hand.worth).to eq(:twopair)
+      expect(hand.worth).to eq(:two_pair)
     end
    
     it "correctly determines a pair" do
@@ -193,7 +202,7 @@ RSpec.describe Hand do
     
     it "correctly determines a pair" do
       hand.cards = [card46, card47, card48, card49, card50]
-      expect(hand.worth).to eq(:mixed)
+      expect(hand.worth).to eq(:singles)
     end
   end
   
