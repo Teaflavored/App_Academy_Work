@@ -177,7 +177,92 @@ WHERE population / 3 > ALL (
   y.population IS NOT NULL
   AND x.name <> y.name
 )
+/* SELECT from Nobel Tutorial */
+/* 1 */
+SELECT
+yr, subject, winner
+FROM
+nobel
+WHERE yr = 1950
 
+
+/* 2 */
+SELECT
+winner
+FROM
+nobel
+WHERE
+subject = 'Literature' AND yr = 1962
+
+/* 3 */
+SELECT
+yr, subject
+FROM
+nobel
+WHERE winner = 'Albert Einstein'
+
+/* 4 */
+SELECT
+winner
+FROM
+nobel
+WHERE
+subject = 'Peace' AND yr >= 2000
+
+/* 5 */
+SELECT
+yr, subject, winner
+FROM
+nobel
+WHERE
+subject = 'Literature' AND yr BETWEEN 1980 AND 1989
+
+/* 6 */
+SELECT
+yr, subject, winner
+FROM
+nobel
+WHERE winner IN ('Theodore Roosevelt', 'Woodrow Wilson', 'Jed Bartlet', 'Jimmy Carter')
+
+/* 7 */
+SELECT
+winner
+FROM
+nobel
+WHERE
+winner LIKE 'John%'
+
+/* 8 */
+/* chemistry */
+SELECT
+yr
+FROM
+nobel
+WHERE subject = 'Chemistry'
+
+/* physics */
+SELECT
+yr
+FROM
+nobel
+WHERE subject = 'Physics'
+
+SELECT DISTINCT
+a.yr
+FROM 
+((SELECT
+yr
+FROM
+nobel
+WHERE subject = 'Physics') a
+LEFT OUTER JOIN
+(SELECT
+yr
+FROM
+nobel
+WHERE subject = 'Chemistry') b
+ON a.yr = b.yr)
+WHERE b.yr IS NULL
 
 
 SELECT
@@ -261,7 +346,7 @@ FROM route a JOIN route b ON
 WHERE a.stop=53
 
 SELECT DISTINCT e.num, e.company, f.name, f.num, f.company
-FROM  (SELECT DISTINCT a.num, b.stop, a.company
+FROM  (SELECT DISTINCT a.num, stopa.name, b.stop, a.company
   FROM route a JOIN route b ON
       (a.company=b.company AND a.num = b.num)
       JOIN stops stopa ON (a.stop=stopa.id) 
@@ -274,3 +359,4 @@ FROM  (SELECT DISTINCT a.num, b.stop, a.company
       JOIN stops stopa ON (a.stop=stopa.id) 
       JOIN stops stopb ON (b.stop=stopb.id) 
   WHERE stopb.name='Sighthill') f ON e.stop = f.stop
+  ORDER BY f.name
