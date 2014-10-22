@@ -5,9 +5,13 @@ class QuestionFollower
   attr_reader :id, :follower_id, :followed_question_id
 
   def initialize(options = {})
-    @id = options['id']
     @follower_id = options['follower_id']
     @followed_question_id = options['followed_question_id'] 
+    @id = options['id']
+  end
+  
+  def table_name
+    "question_followers"
   end
   
   def self.followers_for_question_id(question_id)

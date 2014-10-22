@@ -1,13 +1,19 @@
 require_relative 'all_models.rb'
 
 class User
+  include Models
+  
   attr_reader :id
   attr_accessor :fname, :lname
   
   def initialize(options = {})
-    @id = options['id']
     @fname = options['fname']
     @lname = options['lname']
+    @id = options['id']
+  end
+  
+  def table_name
+    "users"
   end
   
   def ask_question!(title, body)
@@ -17,35 +23,6 @@ class User
   def edit_question(question_id, title, body)
     raise unless Question.find_by_id(question_id).user_id == @id
     Question.new({'id'=>question_id, 'title'=> title, 'body' => body, 'user_id' => @id}).save
-  end
-  
-  def save
-    if @id.nil?
-      query = <<-SQL 
-      INSERT INTO 
-      users(fname, lname)
-      VALUES 
-      (?, ?)
-      SQL
-      
-      QuestionsDB.instance.execute(query, @fname, @lname)
-      @id = QuestionsDB.instance.last_insert_row_id
-    else
-      update
-    end
-  end
-  
-  def update
-    query = <<-SQL
-    UPDATE 
-    users
-    SET 
-    fname = ?,
-    lname = ? 
-    WHERE id = ?
-    SQL
-    
-    QuestionsDB.instance.execute(query, @fname, @lname, @id)
   end
   
   def followed_questions

@@ -1,46 +1,20 @@
 require_relative 'all_models.rb'
 
 class Reply
+  include Models
   attr_reader :id, :subject_question_id, :parent_reply_id, :user_id
   attr_accessor :body
   
   def initialize(options = {})
-    @id = options['id']
     @body = options['body']
     @subject_question_id = options['subject_question_id']
     @parent_reply_id = options['parent_reply_id']
     @user_id = options['user_id'] 
+    @id = options['id']
   end
   
-  def save
-    if @id.nil?
-      query = <<-SQL 
-      INSERT INTO 
-      replies(body, subject_question_id, parent_reply_id, user_id)
-      VALUES 
-      (?, ?, ?, ?)
-      SQL
-      
-      QuestionsDB.instance.execute(query, @body, @subject_question_id, @parent_reply_id, @user_id)
-      @id = QuestionsDB.instance.last_insert_row_id
-    else
-      update
-    end
-  end
-  
-  def update
-    query = <<-SQL
-    UPDATE 
-    questions
-    SET 
-    body = ?,
-    subject_question_id = ?,
-    parent_reply_id = ?
-    user_id = ?
-    WHERE id = ?
-    SQL
-    
-    QuestionsDB.instance.execute(query, @body, @subject_question_id, @parent_reply_id, @user_id, @id)
+  def table_name
+    "replies"
   end
   
   def self.all

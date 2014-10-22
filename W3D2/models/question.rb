@@ -1,44 +1,20 @@
 require_relative 'all_models.rb'
 
 class Question
+  include Models
+  
   attr_reader :id, :user_id
   attr_accessor :title, :body
 
   def initialize(options={})
-    @id = options['id']
     @title = options['title']
     @body = options['body']
     @user_id = options['user_id']
+    @id = options['id']
   end
   
-  def save
-    if @id.nil?
-      query = <<-SQL 
-      INSERT INTO 
-      questions(title, body, user_id)
-      VALUES 
-      (?, ?, ?)
-      SQL
-      
-      QuestionsDB.instance.execute(query, @title, @body, @user_id)
-      @id = QuestionsDB.instance.last_insert_row_id
-    else
-      update
-    end
-  end
-  
-  def update
-    query = <<-SQL
-    UPDATE 
-    questions
-    SET 
-    title = ?,
-    body = ?,
-    user_id = ?
-    WHERE id = ?
-    SQL
-    
-    QuestionsDB.instance.execute(query, @title, @body, @user_id, @id)
+  def table_name
+    "questions"
   end
   
   def likers
