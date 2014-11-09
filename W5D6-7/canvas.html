@@ -1,0 +1,26 @@
+<html>
+  <body>
+  <canvas width="800" height="600" id="canvas"></canvas>
+  <script>
+    var canvas = document.getElementById('canvas');
+    //first grab canvas in a variable
+    var c = canvas.getContext('2d');
+    //get context of canvas into another variable that we can manipulator
+    c.fillStyle = "red";
+    //fillStyle changes color
+    c.fillRect(700,200,200,400);
+    //fillRect moves around rectangle and resizes it,
+    //x, y, width, height
+
+    c.beginPath();
+    c.moveTo(50,50);
+    c.lineTo(100,50);
+    c.lineTo(50, 100);
+    c.closePath();
+    c.fill();
+    c.strokeStyle = 'rgb(256,100,256)';
+    c.lineWidth = 5;
+    c.stroke();
+  </script>
+  </body>
+</html>
