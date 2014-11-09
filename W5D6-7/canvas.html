@@ -1,26 +1,43 @@
 <html>
-  <body>
-  <canvas width="800" height="600" id="canvas"></canvas>
-  <script>
-    var canvas = document.getElementById('canvas');
-    //first grab canvas in a variable
-    var c = canvas.getContext('2d');
-    //get context of canvas into another variable that we can manipulator
-    c.fillStyle = "red";
-    //fillStyle changes color
-    c.fillRect(700,200,200,400);
-    //fillRect moves around rectangle and resizes it,
-    //x, y, width, height
+<body>
+<canvas width="500" height="500" id="canvas"></canvas>
+<script>
 
-    c.beginPath();
-    c.moveTo(50,50);
-    c.lineTo(100,50);
-    c.lineTo(50, 100);
-    c.closePath();
-    c.fill();
-    c.strokeStyle = 'rgb(256,100,256)';
-    c.lineWidth = 5;
-    c.stroke();
-  </script>
-  </body>
+var data = [ 16, 68, 20, 30, 54 ];
+var canvas = document.getElementById('canvas');
+var c = canvas.getContext('2d');
+c.fillStyle = "white";
+c.fillRect(0, 0, 500, 500);
+//putting data on graph
+c.fillStyle = "blue";
+for(var i = 0; i < data.length; i++){
+  var dp = data[i];
+  c.fillRect(40 + i * 100, 460 - dp * 5, 50, dp * 5);
+}
+//axis
+c.fillStyle = "black";
+c.lineWidth = 2.0;
+c.beginPath();
+c.moveTo(30,10);
+c.lineTo(30, 460);
+c.lineTo(490, 460);
+c.stroke();
+
+//text and vertical lines
+c.fillStyle = "black";
+for(var i = 0; i < 6; i++){
+  c.fillText((5-i)*20 + "", 4, i * 80 + 60);
+  c.beginPath();
+  c.moveTo(25, i * 80 + 60);
+  c.lineTo(30, i * 80 + 60);
+  c.stroke();
+}
+
+var labels = ["JAN","FEB","MAR","APR","MAY"];
+//draw horiz text
+for(var i=0; i<5; i++) {
+    c.fillText(labels[i], 50+ i*100, 475);
+}
+</script>
+</body>
 </html>
