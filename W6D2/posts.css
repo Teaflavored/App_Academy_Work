@@ -1,0 +1,38 @@
+div.post {
+  height: auto;
+  width:600px;
+  border: 5px gray solid;
+  border-bottom: 0;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div.post:last-child {
+  border-bottom: 5px gray solid;
+}
+
+div.post-header {
+  padding: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px gray solid;
+
+}
+div.image {
+  border: 1px blue solid;
+  margin-right: 20px;
+  float:left;
+}
+div.post > div.post-header > div.info {
+  color: blue;
+  font-size: 25px;
+}
+
+div.post > div.post-header > div.info > span.timestamp{
+  font-size: 14px;
+  color:gray;
+}
+
+div.post > p.content {
+  padding: 10px;
+  margin: 0;
+}

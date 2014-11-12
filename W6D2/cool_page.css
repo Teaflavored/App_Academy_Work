@@ -1,0 +1,151 @@
+body {
+  margin: 0;
+  height: 500px;
+}
+nav.navbar {
+  background:red;
+  color: white;
+  height: 30px;
+  margin: 0;
+  border-bottom: 2px black solid;
+  position: relative;
+}
+
+div.content {
+  width: 75%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+nav.navbar div.content{
+  border-left:2px black solid;
+  border-right:2px black solid;
+}
+
+nav.navbar div.content div.brand{
+  margin-left: 20px;
+  padding-top: 7px;
+  font-weight:bold;
+  width: 200px;
+  display: inline-block;
+}
+
+nav.navbar div.content div.nav-menu {
+  float: right;
+  height: 30px;
+}
+
+nav.navbar div.content ul {
+  margin: 0;
+  float: right;
+  height: 100%;
+}
+
+nav.navbar div.content ul.nav-link-list > li {
+  display: inline;
+  height: 30px;
+  padding: 0 10px;
+}
+
+nav.navbar div.content ul li a {
+  display: inline-block;
+  border-left: 2px black solid;
+  height: 30px;
+/*  padding-top: 7px;*/
+}
+
+span {
+  padding-top: 5px;
+  display: inline-block;
+  padding-left: 15px;
+  color:white;
+}
+
+div.mainbody{
+  width: 75%;
+  height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border-left:2px lightgray solid;
+  border-right:2px lightgray solid;
+
+}
+
+
+div.mainbody div.sidebar {
+  display:inline-block;
+  margin-right:0;
+  margin-top: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-right: 3px lightgray solid;
+  width: 20%;
+  height: 480px;
+}
+
+div.mainbody div.main{
+  display:inline-block;
+  margin-top: 20px;
+  width: 70%;
+  height: 480px;
+  vertical-align: top;
+  padding-left: 20px;
+}
+
+div.mainbody h2{
+  margin-top:0;
+}
+
+div.mainbody div.footer {
+  margin-left: -2px;
+  width: 100%;
+  background: #DFDFDF;
+  border: 2px lightgray solid;
+  position: relative;
+}
+
+
+.trademark {
+  display: inline-block;
+  padding: 10px;
+}
+
+.footer-links{
+  display: inline-block;
+  position: absolute;
+  right:10px;
+  margin-top:10px;
+}
+.footer-links li{
+  display:inline;
+}
+
+.footer-links li a {
+  font-size:0.8em;
+  color: gray;
+  text-decoration: none;
+}
+
+.dropdown-items{
+  display:none;
+  width: 250px;
+  position: absolute;
+  top: 32px;
+  right: 256px;
+/*  transition: 1s;*/
+}
+
+.dropdown-items li {
+  display: block;
+  border: 2px black solid;
+  border-top: 0;
+  background: red;
+}
+.nav-link:hover .dropdown-items{
+  display: block;
+}
+
+.dropdown-items li:hover{
+  background: gray;
+}
